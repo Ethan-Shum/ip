@@ -1,0 +1,22 @@
+class Deadline extends Task {
+    private final String by;
+    
+    public Deadline(String description, String by) {
+        super(description);
+        this.by = by;
+    }
+    
+    @Override
+    public String getTypeIcon() {
+        return "D";
+    }
+    
+    @Override
+    public String getAdditionalInfo() {
+        return " (by: " + by + ")";
+    }
+    
+    public String getBy() {
+        return by;
+    }
+}

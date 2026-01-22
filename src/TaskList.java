@@ -8,7 +8,23 @@ class TaskList {
     }
     
     public void addTask(String taskDescription) {
-        tasks[count] = new Task(taskDescription);
+        // Default behavior - create a Todo task
+        tasks[count] = new Todo(taskDescription);
+        count++;
+    }
+    
+    public void addTodo(String description) {
+        tasks[count] = new Todo(description);
+        count++;
+    }
+    
+    public void addDeadline(String description, String by) {
+        tasks[count] = new Deadline(description, by);
+        count++;
+    }
+    
+    public void addEvent(String description, String from, String to) {
+        tasks[count] = new Event(description, from, to);
         count++;
     }
     

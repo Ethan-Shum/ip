@@ -49,6 +49,54 @@ public class Kiko {
                 } catch (NumberFormatException e) {
                     System.out.println(" Please enter a valid task number after 'unmark'");
                 }
+            } else if (input.toLowerCase().startsWith("todo ")) {
+                String description = input.substring(5).trim();
+                if (description.isEmpty()) {
+                    System.out.println(" Please provide a description for the todo task");
+                } else {
+                    taskList.addTodo(description);
+                    System.out.println(" Got it. I've added this task:");
+                    System.out.println("   " + taskList.getTask(taskList.getTaskCount()));
+                    System.out.println(" Now you have " + taskList.getTaskCount() + " tasks in the list.");
+                }
+            } else if (input.toLowerCase().startsWith("deadline ")) {
+                String rest = input.substring(9).trim();
+                int byIndex = rest.indexOf("/by ");
+                if (byIndex == -1) {
+                    System.out.println(" Please use the format: deadline <description> /by <date>");
+                } else {
+                    String description = rest.substring(0, byIndex).trim();
+                    String by = rest.substring(byIndex + 4).trim();
+                    if (description.isEmpty() || by.isEmpty()) {
+                        System.out.println(" Please provide both description and deadline date");
+                    } else {
+                        taskList.addDeadline(description, by);
+                        System.out.println(" Got it. I've added this task:");
+                        System.out.println("   " + taskList.getTask(taskList.getTaskCount()));
+                        System.out.println(" Now you have " + taskList.getTaskCount() + " tasks in the list.");
+                    }
+                }
+            } else if (input.toLowerCase().startsWith("event ")) {
+                String rest = input.substring(6).trim();
+                int fromIndex = rest.indexOf("/from ");
+                int toIndex = rest.indexOf("/to ");
+                
+                if (fromIndex == -1 || toIndex == -1) {
+                    System.out.println(" Please use the format: event <description> /from <start> /to <end>");
+                } else {
+                    String description = rest.substring(0, fromIndex).trim();
+                    String from = rest.substring(fromIndex + 6, toIndex).trim();
+                    String to = rest.substring(toIndex + 4).trim();
+                    
+                    if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
+                        System.out.println(" Please provide description, start time, and end time");
+                    } else {
+                        taskList.addEvent(description, from, to);
+                        System.out.println(" Got it. I've added this task:");
+                        System.out.println("   " + taskList.getTask(taskList.getTaskCount()));
+                        System.out.println(" Now you have " + taskList.getTaskCount() + " tasks in the list.");
+                    }
+                }
             } else if (!input.equalsIgnoreCase("bye")) {
                 taskList.addTask(input);
                 System.out.println(" added: " + input);
