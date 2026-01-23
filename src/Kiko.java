@@ -49,6 +49,20 @@ public class Kiko {
                 } catch (NumberFormatException e) {
                     System.out.println(" Oi enter a valid task number after 'unmark'");
                 }
+            } else if (input.toLowerCase().startsWith("delete ")) {
+                try {
+                    int taskNumber = Integer.parseInt(input.substring(7).trim());
+                    Task deletedTask = taskList.deleteTask(taskNumber);
+                    if (deletedTask != null) {
+                        System.out.println(" Noted. I've removed this task:");
+                        System.out.println("   " + deletedTask);
+                        System.out.println(" Now you have " + taskList.getTaskCount() + " tasks in the list.");
+                    } else {
+                        System.out.println(" I dunno this task number. Please enter a number between 1 and " + taskList.getTaskCount());
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println(" Oi enter a valid task number after 'delete'");
+                }
             } else if (input.equalsIgnoreCase("todo") || input.toLowerCase().startsWith("todo ")) {
                 // Check if input is exactly "todo" without description
                 if (input.equalsIgnoreCase("todo")) {
@@ -66,7 +80,6 @@ public class Kiko {
                     System.out.println(" Now you have " + taskList.getTaskCount() + " tasks in the list.");
                 }
             } else if (input.equalsIgnoreCase("deadline") || input.toLowerCase().startsWith("deadline ")) {
-                // Check if input is exactly "deadline" without description
                 if (input.equalsIgnoreCase("deadline")) {
                     System.out.println(" OIII use the format: deadline <description> /by <date>");
                     continue;
