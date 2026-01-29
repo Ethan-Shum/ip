@@ -1,13 +1,32 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
+/**
+ * Kiko is a task management chatbot that allows users to manage their tasks.
+ * Supports adding todos, deadlines, and events, marking tasks as done/not done,
+ * listing tasks, and deleting tasks.
+ * The chatbot continues until the user says "bye".
+ */
 public class Kiko {
+    /**
+     * Main entry point for the Kiko chatbot application.
+     * Displays a greeting, then enters a loop to process user commands.
+     * Commands are parsed and delegated to appropriate handler methods.
+     * The loop continues until the user enters "bye".
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         String greeting = " Hello! I'm Kiko the bunny\n"
                 + " What can I do for you? >.<";
         System.out.println(greeting);
 
         Scanner scanner = new Scanner(System.in);
-        TaskList taskList = new TaskList();
+        
+        // Load tasks from file on startup
+        ArrayList<Task> loadedTasks = Storage.loadTasks();
+        TaskList taskList = new TaskList(loadedTasks);
+        
         String input;
         
         do {
@@ -45,7 +64,6 @@ public class Kiko {
                     break;
                     
                 case BYE:
-                    // Do nothing, loop will exit
                     break;
                     
                 case UNKNOWN:
