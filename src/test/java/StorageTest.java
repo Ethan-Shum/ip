@@ -1,6 +1,11 @@
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
+import kiko.storage.Storage;
+import kiko.task.Task;
+import kiko.task.Todo;
+import kiko.task.Deadline;
+import kiko.task.Event;
 
 /**
  * JUnit tests for the Storage class.

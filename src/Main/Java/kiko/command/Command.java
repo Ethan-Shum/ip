@@ -1,3 +1,4 @@
+package kiko.command;
 /**
  * Enumeration of all valid commands supported by the application.
  * Each command has a corresponding command word used for parsing user input.

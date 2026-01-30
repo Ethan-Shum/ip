@@ -1,3 +1,4 @@
+package kiko.task;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -5,7 +6,7 @@ import java.time.format.DateTimeParseException;
 /**
  * Represents an Event task with a start time and end time.
  */
-class Event extends Task {
+public class Event extends Task {
     private final LocalDateTime from;
     private final LocalDateTime to;
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");

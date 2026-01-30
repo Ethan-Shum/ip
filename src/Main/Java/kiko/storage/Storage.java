@@ -1,3 +1,4 @@
+package kiko.storage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,6 +10,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import kiko.task.Deadline;
+import kiko.task.Event;
+import kiko.task.Task;
+import kiko.task.Todo;
 
 /**
  * Handles loading and saving of tasks to a file.
@@ -107,7 +113,7 @@ public class Storage {
      * @param line The line from the file.
      * @return The parsed Task, or null if parsing fails.
      */
-    static Task parseTaskFromString(String line) {
+    public static Task parseTaskFromString(String line) {
         try {
             String[] parts = line.split(" \\| ");
             
