@@ -163,4 +163,23 @@ public class TaskList {
     private void saveTasks() {
         Storage.saveTasks(tasks);
     }
+    
+    /**
+     * Finds tasks that contain the given keyword in their description.
+     *
+     * @param keyword The keyword to search for.
+     * @return An array of tasks that match the keyword, or empty array if none found.
+     */
+    public Task[] findTasks(String keyword) {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+        String lowerKeyword = keyword.toLowerCase();
+        
+        for (Task task : tasks) {
+            if (task.getDescription().toLowerCase().contains(lowerKeyword)) {
+                matchingTasks.add(task);
+            }
+        }
+        
+        return matchingTasks.toArray(new Task[0]);
+    }
 }

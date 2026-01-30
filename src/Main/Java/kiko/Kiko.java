@@ -76,6 +76,10 @@ public class Kiko {
                     handleEvent(taskList, argument, ui, parser);
                     break;
                     
+                case FIND:
+                    handleFind(taskList, argument, ui);
+                    break;
+                    
                 case BYE:
                     break;
                     
@@ -210,5 +214,19 @@ public class Kiko {
         } catch (DateTimeParseException e) {
             ui.showInvalidDateFormat();
         }
+    }
+    
+    private static void handleFind(TaskList taskList, String argument, Ui ui) {
+        if (argument.isEmpty()) {
+            ui.showEmptyFindKeyword();
+            return;
+        }
+        
+        Task[] matchingTasks = taskList.findTasks(argument);
+        String[] taskStrings = new String[matchingTasks.length];
+        for (int i = 0; i < matchingTasks.length; i++) {
+            taskStrings[i] = matchingTasks[i].toString();
+        }
+        ui.showFindResults(taskStrings, argument);
     }
 }
