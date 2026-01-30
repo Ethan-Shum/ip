@@ -198,4 +198,28 @@ public class Ui {
         System.out.println("   yyyy/MM/dd HHmm (e.g., 2019/12/02 1800)");
         System.out.println("   yyyy-MM-dd (time defaults to 0000)");
     }
+    
+    /**
+     * Displays search results for tasks matching a keyword.
+     * 
+     * @param tasks Array of task strings that match the search keyword
+     * @param keyword The keyword that was searched for
+     */
+    public void showFindResults(String[] tasks, String keyword) {
+        if (tasks.length == 0) {
+            System.out.println(" No matching tasks found for '" + keyword + "'");
+        } else {
+            System.out.println(" Here are the matching tasks in your list:");
+            for (int i = 0; i < tasks.length; i++) {
+                System.out.println(" " + (i + 1) + "." + tasks[i]);
+            }
+        }
+    }
+    
+    /**
+     * Displays an error message for empty find keyword.
+     */
+    public void showEmptyFindKeyword() {
+        System.out.println(" Oi provide a keyword to search for");
+    }
 }
