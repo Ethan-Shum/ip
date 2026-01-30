@@ -1,16 +1,33 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 /**
  * Represents a Deadline task with a specific due date/time.
  */
 class Deadline extends Task {
-    private final String by;
+    private final LocalDateTime by;
+    private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+    private static final DateTimeFormatter DISPLAY_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
     
     /**
      * Constructs a Deadline task with description and deadline.
      *
      * @param description The description of the Deadline task.
-     * @param by The deadline date/time for the task.
+     * @param by The deadline date/time for the task in yyyy-MM-dd HHmm format.
      */
-    public Deadline(String description, String by) {
+    public Deadline(String description, String by) throws DateTimeParseException {
+        super(description);
+        this.by = LocalDateTime.parse(by, INPUT_FORMATTER);
+    }
+    
+    /**
+     * Constructs a Deadline task with description and LocalDateTime.
+     *
+     * @param description The description of the Deadline task.
+     * @param by The deadline date/time as LocalDateTime.
+     */
+    public Deadline(String description, LocalDateTime by) {
         super(description);
         this.by = by;
     }
@@ -33,15 +50,24 @@ class Deadline extends Task {
      */
     @Override
     public String getAdditionalInfo() {
-        return " (by: " + by + ")";
+        return " (by: " + by.format(DISPLAY_FORMATTER) + ")";
     }
     
     /**
      * Returns the deadline date/time of this task.
      *
-     * @return The deadline string.
+     * @return The deadline LocalDateTime.
      */
-    public String getBy() {
-        return by; 
+    public LocalDateTime getBy() {
+        return by;
+    }
+    
+    /**
+     * Returns the deadline as a formatted string for storage.
+     *
+     * @return The deadline in yyyy-MM-dd HHmm format.
+     */
+    public String getByForStorage() {
+        return by.format(INPUT_FORMATTER);
     }
 }
