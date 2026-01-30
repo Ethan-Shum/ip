@@ -1,8 +1,9 @@
+package kiko.task;
 /**
  * Abstract base class representing a task.
  * Provides common functionality for all task types.
  */
-abstract class Task {
+public abstract class Task {
     protected final String description;
     protected boolean isDone;
     

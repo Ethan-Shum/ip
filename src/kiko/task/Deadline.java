@@ -1,3 +1,4 @@
+package kiko.task;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -5,7 +6,7 @@ import java.time.format.DateTimeParseException;
 /**
  * Represents a Deadline task with a specific due date/time.
  */
-class Deadline extends Task {
+public class Deadline extends Task {
     private final LocalDateTime by;
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     private static final DateTimeFormatter DISPLAY_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");

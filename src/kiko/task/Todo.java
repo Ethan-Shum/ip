@@ -1,7 +1,8 @@
+package kiko.task;
 /**
  * Represents a Todo task without any date/time constraints.
  */
-class Todo extends Task {
+public class Todo extends Task {
     
     /**
      * Constructs a Todo task with the given description.

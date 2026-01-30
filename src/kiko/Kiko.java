@@ -1,3 +1,5 @@
+package kiko;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
@@ -5,6 +7,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
+
+import kiko.command.Command;
+import kiko.task.Task;
+import kiko.tasklist.TaskList;
+import kiko.storage.Storage;
 
 /**
  * Kiko is a task management chatbot that allows users to manage their tasks.

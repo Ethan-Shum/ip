@@ -1,11 +1,19 @@
+package kiko.tasklist;
 import java.util.ArrayList;
+
+import kiko.task.Deadline;
+import kiko.task.Event;
+import kiko.task.Task;
+import kiko.task.Todo;
+import kiko.storage.Storage;
+
 import java.time.LocalDateTime;
 
 /**
  * Represents a list of tasks with operations to manage them.
  * Provides methods to add, delete, mark, unmark, and retrieve tasks.
  */
-class TaskList {
+public class TaskList {
     private final ArrayList<Task> tasks;
     
     /**
