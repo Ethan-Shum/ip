@@ -107,7 +107,7 @@ public class Storage {
      * @param line The line from the file.
      * @return The parsed Task, or null if parsing fails.
      */
-    private static Task parseTaskFromString(String line) {
+    static Task parseTaskFromString(String line) {
         try {
             String[] parts = line.split(" \\| ");
             

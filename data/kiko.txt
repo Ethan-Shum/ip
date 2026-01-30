@@ -1,2 +1,1 @@
-D | 0 | homework | 2038-12-22 2359
-T | 0 | eat
+T | 0 | eat now
