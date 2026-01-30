@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +17,7 @@ import java.util.List;
 public class Storage {
     private static final String FILE_PATH = "./data/kiko.txt";
     private static final String DIRECTORY_PATH = "./data/";
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     
     /**
      * Saves all tasks to the file.
@@ -73,8 +77,8 @@ public class Storage {
     /**
      * Converts a task to a string representation for file storage.
      * Format: T | 1 | read book
-     *         D | 0 | return book | June 6th
-     *         E | 0 | project meeting | Aug 6th 2-4pm
+     *         D | 0 | return book | 2019-12-02 1800
+     *         E | 0 | project meeting | 2019-08-06 1400 | 2019-08-06 1600
      *
      * @param task The task to convert.
      * @return String representation for file storage.
@@ -88,10 +92,10 @@ public class Storage {
             return type + " | " + status + " | " + description;
         } else if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
-            return type + " | " + status + " | " + description + " | " + deadline.getBy();
+            return type + " | " + status + " | " + description + " | " + deadline.getByForStorage();
         } else if (task instanceof Event) {
             Event event = (Event) task;
-            return type + " | " + status + " | " + description + " | " + event.getFrom() + " | " + event.getTo();
+            return type + " | " + status + " | " + description + " | " + event.getFromForStorage() + " | " + event.getToForStorage();
         }
         
         return "";
@@ -124,14 +128,17 @@ public class Storage {
                 case "D":
                     if (parts.length >= 4) {
                         String by = parts[3].trim();
-                        task = new Deadline(description, by);
+                        LocalDateTime byDateTime = LocalDateTime.parse(by, DATE_FORMATTER);
+                        task = new Deadline(description, byDateTime);
                     }
                     break;
                 case "E":
                     if (parts.length >= 5) {
                         String from = parts[3].trim();
                         String to = parts[4].trim();
-                        task = new Event(description, from, to);
+                        LocalDateTime fromDateTime = LocalDateTime.parse(from, DATE_FORMATTER);
+                        LocalDateTime toDateTime = LocalDateTime.parse(to, DATE_FORMATTER);
+                        task = new Event(description, fromDateTime, toDateTime);
                     }
                     break;
             }
@@ -141,6 +148,9 @@ public class Storage {
             }
             
             return task;
+        } catch (DateTimeParseException e) {
+            System.out.println(" Error parsing date from line: " + line);
+            return null;
         } catch (Exception e) {
             System.out.println(" Error parsing task from line: " + line);
             return null;

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.time.LocalDateTime;
 
 /**
  * Represents a list of tasks with operations to manage them.
@@ -51,7 +52,7 @@ class TaskList {
      * @param description The description of the Deadline task.
      * @param by The deadline date/time for the task.
      */
-    public void addDeadline(String description, String by) {
+    public void addDeadline(String description, LocalDateTime by) {
         tasks.add(new Deadline(description, by));
         saveTasks();
     }
@@ -63,7 +64,7 @@ class TaskList {
      * @param from The start time of the event.
      * @param to The end time of the event.
      */
-    public void addEvent(String description, String from, String to) {
+    public void addEvent(String description, LocalDateTime from, LocalDateTime to) {
         tasks.add(new Event(description, from, to));
         saveTasks();
     }
