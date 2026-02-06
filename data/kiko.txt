@@ -1,3 +1,2 @@
 T | 1 | Test todo task
-T | 0 | eat
-T | 0 | run
+T | 0 | nom

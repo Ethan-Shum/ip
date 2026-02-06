@@ -1,6 +1,5 @@
 package kiko;
 
-import java.util.Scanner;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -9,7 +8,6 @@ import kiko.command.Command;
 import kiko.task.Task;
 import kiko.tasklist.TaskList;
 import kiko.storage.Storage;
-import kiko.ui.Ui;
 import kiko.parser.Parser;
 
 /**
@@ -20,157 +18,163 @@ import kiko.parser.Parser;
  */
 public class Kiko {
     
+    private Parser parser;
+    private TaskList taskList;
+    
     /**
-     * Main entry point for the Kiko chatbot application.
-     * Displays a greeting, then enters a loop to process user commands.
-     * Commands are parsed and delegated to appropriate handler methods.
-     * The loop continues until the user enters "bye".
-     *
-     * @param args Command-line arguments (not used).
+     * Constructor for Kiko.
+     * Initializes the parser and loads tasks from storage.
      */
-    public static void main(String[] args) {
-        Ui ui = new Ui();
-        Parser parser = new Parser();
-        
-        ui.showGreeting();
-
-        Scanner scanner = new Scanner(System.in);
-        
-        // Load tasks from file on startup
+    public Kiko() {
+        this.parser = new Parser();
         ArrayList<Task> loadedTasks = Storage.loadTasks();
-        TaskList taskList = new TaskList(loadedTasks);
-        
-        String input;
-        
-        do {
-            input = scanner.nextLine();
-            Command command = Command.fromInput(input);
-            String argument = command.getArgument(input.toLowerCase());
-            
-            switch (command) {
-                case LIST:
-                    handleList(taskList, ui);
-                    break;
-                    
-                case MARK:
-                    handleMark(taskList, argument, ui, parser);
-                    break;
-                    
-                case UNMARK:
-                    handleUnmark(taskList, argument, ui, parser);
-                    break;
-                    
-                case DELETE:
-                    handleDelete(taskList, argument, ui, parser);
-                    break;
-                    
-                case TODO:
-                    handleTodo(taskList, argument, ui);
-                    break;
-                    
-                case DEADLINE:
-                    handleDeadline(taskList, argument, ui, parser);
-                    break;
-                    
-                case EVENT:
-                    handleEvent(taskList, argument, ui, parser);
-                    break;
-                    
-                case FIND:
-                    handleFind(taskList, argument, ui);
-                    break;
-                    
-                case BYE:
-                    break;
-                    
-                case UNKNOWN:
-                default:
-                    ui.showUnknownCommand();
-                    break;
-            }
-        } while (!input.equalsIgnoreCase("bye"));
-
-        ui.showFarewell();
+        this.taskList = new TaskList(loadedTasks);
     }
     
-    private static void handleList(TaskList taskList, Ui ui) {
-        Task[] tasks = taskList.getAllTasks();
-        String[] taskStrings = new String[tasks.length];
-        for (int i = 0; i < tasks.length; i++) {
-            taskStrings[i] = tasks[i].toString();
+    /**
+     * Generates a response to user input for GUI interaction.
+     * This method processes the input and returns a string response
+     * suitable for display in the GUI.
+     *
+     * @param input The user's input command
+     * @return A string response to be displayed in the GUI
+     */
+    
+    /**
+     * Generates a response to user input for GUI interaction.
+     * This method processes the input and returns a string response
+     * suitable for display in the GUI.
+     *
+     * @param input The user's input command
+     * @return A string response to be displayed in the GUI
+     */
+    public String getResponse(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            return "Please enter a command!";
         }
-        ui.showTaskList(taskStrings);
+        
+        Command command = Command.fromInput(input);
+        String argument = command.getArgument(input.toLowerCase());
+        
+        switch (command) {
+            case LIST:
+                return handleListGui();
+                
+            case MARK:
+                return handleMarkGui(argument);
+                
+            case UNMARK:
+                return handleUnmarkGui(argument);
+                
+            case DELETE:
+                return handleDeleteGui(argument);
+                
+            case TODO:
+                return handleTodoGui(argument);
+                
+            case DEADLINE:
+                return handleDeadlineGui(argument);
+                
+            case EVENT:
+                return handleEventGui(argument);
+                
+            case FIND:
+                return handleFindGui(argument);
+                
+            case BYE:
+                return "Goodbye! Hope to see you again soon!";
+                
+            case UNKNOWN:
+            default:
+                return "I'm sorry, but I don't know what that means. Try these commands:\n"
+                     + "  list - show all tasks\n"
+                     + "  todo [description] - add a todo\n"
+                     + "  deadline [description] /by [date] - add a deadline\n"
+                     + "  event [description] /from [date] /to [date] - add an event\n"
+                     + "  mark [number] - mark task as done\n"
+                     + "  unmark [number] - mark task as not done\n"
+                     + "  delete [number] - delete a task\n"
+                     + "  find [keyword] - find tasks by keyword\n"
+                     + "  bye - exit";
+        }
     }
     
-    private static void handleMark(TaskList taskList, String argument, Ui ui, Parser parser) {
+    private String handleListGui() {
+        Task[] tasks = taskList.getAllTasks();
+        if (tasks.length == 0) {
+            return "You have no tasks in your list!";
+        }
+        
+        StringBuilder response = new StringBuilder("Here are the tasks in your list:\n");
+        for (int i = 0; i < tasks.length; i++) {
+            response.append((i + 1)).append(". ").append(tasks[i].toString()).append("\n");
+        }
+        return response.toString().trim();
+    }
+    
+    private String handleMarkGui(String argument) {
         int taskNumber = parser.parseTaskNumber(argument);
         if (taskNumber == -1) {
-            ui.showInvalidNumberFormat("mark");
-            return;
+            return "Please provide a valid task number to mark!";
         }
         
         if (taskList.markTask(taskNumber)) {
             Task task = taskList.getTask(taskNumber);
-            ui.showTaskMarked(task.toString());
+            return "Nice! I've marked this task as done:\n  " + task.toString();
         } else {
-            ui.showInvalidTaskNumber(taskList.getTaskCount());
+            return "Task number " + taskNumber + " does not exist. You have " + taskList.getTaskCount() + " tasks.";
         }
     }
     
-    private static void handleUnmark(TaskList taskList, String argument, Ui ui, Parser parser) {
+    private String handleUnmarkGui(String argument) {
         int taskNumber = parser.parseTaskNumber(argument);
         if (taskNumber == -1) {
-            ui.showInvalidNumberFormat("unmark");
-            return;
+            return "Please provide a valid task number to unmark!";
         }
         
         if (taskList.unmarkTask(taskNumber)) {
             Task task = taskList.getTask(taskNumber);
-            ui.showTaskUnmarked(task.toString());
+            return "OK, I've marked this task as not done yet:\n  " + task.toString();
         } else {
-            ui.showInvalidTaskNumber(taskList.getTaskCount());
+            return "Task number " + taskNumber + " does not exist. You have " + taskList.getTaskCount() + " tasks.";
         }
     }
     
-    private static void handleDelete(TaskList taskList, String argument, Ui ui, Parser parser) {
+    private String handleDeleteGui(String argument) {
         int taskNumber = parser.parseTaskNumber(argument);
         if (taskNumber == -1) {
-            ui.showInvalidNumberFormat("delete");
-            return;
+            return "Please provide a valid task number to delete!";
         }
         
         Task deletedTask = taskList.deleteTask(taskNumber);
         if (deletedTask != null) {
-            ui.showTaskDeleted(deletedTask.toString(), taskList.getTaskCount());
+            return "Noted. I've removed this task:\n  " + deletedTask.toString() + "\nNow you have " + taskList.getTaskCount() + " tasks in the list.";
         } else {
-            ui.showInvalidTaskNumber(taskList.getTaskCount());
+            return "Task number " + taskNumber + " does not exist. You have " + taskList.getTaskCount() + " tasks.";
         }
     }
     
-    private static void handleTodo(TaskList taskList, String argument, Ui ui) {
+    private String handleTodoGui(String argument) {
         if (argument.isEmpty()) {
-            ui.showEmptyTodoDescription();
-            return;
+            return "The description of a todo cannot be empty!";
         }
         
         taskList.addTodo(argument);
-        ui.showTodoAdded(taskList.getTask(taskList.getTaskCount()).toString(), taskList.getTaskCount());
+        return "Got it. I've added this task:\n  " + taskList.getTask(taskList.getTaskCount()).toString() + "\nNow you have " + taskList.getTaskCount() + " tasks in the list.";
     }
     
-    private static void handleDeadline(TaskList taskList, String argument, Ui ui, Parser parser) {
+    private String handleDeadlineGui(String argument) {
         if (argument.isEmpty()) {
-            ui.showDeadlineUsage();
-            return;
+            return "Please provide a description and deadline! Usage: deadline [description] /by [date]";
         }
         
         String[] parsedArgs = parser.parseDeadlineArgument(argument);
         if (parsedArgs == null) {
             if (!argument.contains("/by ")) {
-                ui.showDeadlineMissingBy();
+                return "Please include '/by' followed by the deadline date!";
             } else {
-                ui.showDeadlineMissingFields();
+                return "Please provide both description and deadline!";
             }
-            return;
         }
         
         String description = parsedArgs[0];
@@ -179,22 +183,20 @@ public class Kiko {
         try {
             LocalDateTime dateTime = parser.parseDateTime(dateString);
             taskList.addDeadline(description, dateTime);
-            ui.showDeadlineAdded(taskList.getTask(taskList.getTaskCount()).toString(), taskList.getTaskCount());
+            return "Got it. I've added this task:\n  " + taskList.getTask(taskList.getTaskCount()).toString() + "\nNow you have " + taskList.getTaskCount() + " tasks in the list.";
         } catch (DateTimeParseException e) {
-            ui.showInvalidDateFormat();
+            return "Invalid date format! Please use: dd/MM/yyyy HHmm";
         }
     }
     
-    private static void handleEvent(TaskList taskList, String argument, Ui ui, Parser parser) {
+    private String handleEventGui(String argument) {
         if (argument.isEmpty()) {
-            ui.showEventUsage();
-            return;
+            return "Please provide a description and time range! Usage: event [description] /from [date] /to [date]";
         }
         
         String[] parsedArgs = parser.parseEventArgument(argument);
         if (parsedArgs == null) {
-            ui.showEventMissingTimeMarkers();
-            return;
+            return "Please include both '/from' and '/to' with dates!";
         }
         
         String description = parsedArgs[0];
@@ -202,31 +204,33 @@ public class Kiko {
         String toString = parsedArgs[2];
         
         if (description.isEmpty() || fromString.isEmpty() || toString.isEmpty()) {
-            ui.showEventMissingFields();
-            return;
+            return "Please provide description, start time, and end time!";
         }
         
         try {
             LocalDateTime fromDateTime = parser.parseDateTime(fromString);
             LocalDateTime toDateTime = parser.parseDateTime(toString);
             taskList.addEvent(description, fromDateTime, toDateTime);
-            ui.showEventAdded(taskList.getTask(taskList.getTaskCount()).toString(), taskList.getTaskCount());
+            return "Got it. I've added this task:\n  " + taskList.getTask(taskList.getTaskCount()).toString() + "\nNow you have " + taskList.getTaskCount() + " tasks in the list.";
         } catch (DateTimeParseException e) {
-            ui.showInvalidDateFormat();
+            return "Invalid date format! Please use: dd/MM/yyyy HHmm";
         }
     }
     
-    private static void handleFind(TaskList taskList, String argument, Ui ui) {
+    private String handleFindGui(String argument) {
         if (argument.isEmpty()) {
-            ui.showEmptyFindKeyword();
-            return;
+            return "Please provide a keyword to search for!";
         }
         
         Task[] matchingTasks = taskList.findTasks(argument);
-        String[] taskStrings = new String[matchingTasks.length];
-        for (int i = 0; i < matchingTasks.length; i++) {
-            taskStrings[i] = matchingTasks[i].toString();
+        if (matchingTasks.length == 0) {
+            return "No matching tasks found for keyword: " + argument;
         }
-        ui.showFindResults(taskStrings, argument);
+        
+        StringBuilder response = new StringBuilder("Here are the matching tasks in your list:\n");
+        for (int i = 0; i < matchingTasks.length; i++) {
+            response.append((i + 1)).append(". ").append(matchingTasks[i].toString()).append("\n");
+        }
+        return response.toString().trim();
     }
 }
