@@ -31,6 +31,32 @@ public class TaskList {
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
+
+    /**
+     * Copy constructor for deep copying.
+     * 
+     * @param other The TaskList to copy.
+     */
+    public TaskList(TaskList other) {
+        this.tasks = new ArrayList<>();
+        for (Task task : other.tasks) {
+            if (task instanceof Todo) {
+                Todo newTodo = new Todo(task.getDescription());
+                if (task.isDone()) newTodo.markAsDone();
+                this.tasks.add(newTodo);
+            } else if (task instanceof Deadline) {
+                Deadline d = (Deadline) task;
+                Deadline newDeadline = new Deadline(d.getDescription(), d.getBy());
+                if (task.isDone()) newDeadline.markAsDone();
+                this.tasks.add(newDeadline);
+            } else if (task instanceof Event) {
+                Event e = (Event) task;
+                Event newEvent = new Event(e.getDescription(), e.getFrom(), e.getTo());
+                if (task.isDone()) newEvent.markAsDone();
+                this.tasks.add(newEvent);
+            }
+        }
+    }
     
     /**
      * Adds a Todo task with the given description.
@@ -84,6 +110,15 @@ public class TaskList {
         saveTasks();
     }
     
+    /**
+     * Returns the internal ArrayList of tasks.
+     * 
+     * @return The ArrayList containing all tasks.
+     */
+    public ArrayList<Task> getAllTasksArrayList() {
+        return tasks;
+    }
+
     /**
      * Returns all tasks in the list as an array.
      *
