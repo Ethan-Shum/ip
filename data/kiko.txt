@@ -1,2 +1,1 @@
 T | 1 | Test todo task
-T | 0 | nom
