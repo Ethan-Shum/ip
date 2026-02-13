@@ -99,46 +99,6 @@ public class Kiko {
                  + "  delete [number] - delete a task\n"
                  + "  find [keyword] - find tasks by keyword\n"
                  + "  bye - exit";
-            case LIST:
-                assert taskList != null : "TaskList should be initialized";
-                return handleListGui();
-                
-            case MARK:
-                return handleMarkGui(argument);
-                
-            case UNMARK:
-                return handleUnmarkGui(argument);
-                
-            case DELETE:
-                return handleDeleteGui(argument);
-                
-            case TODO:
-                return handleTodoGui(argument);
-                
-            case DEADLINE:
-                return handleDeadlineGui(argument);
-                
-            case EVENT:
-                return handleEventGui(argument);
-                
-            case FIND:
-                return handleFindGui(argument);
-                
-            case BYE:
-                return "CLOSE_WINDOW:Goodbye! Hope to see you again soon!";
-                
-            case UNKNOWN:
-            default:
-                return "I'm sorry, but I don't know what that means. Try these commands:\n"
-                     + "  list - show all tasks\n"
-                     + "  todo [description] - add a todo\n"
-                     + "  deadline [description] /by [date] - add a deadline\n"
-                     + "  event [description] /from [date] /to [date] - add an event\n"
-                     + "  mark [number] - mark task as done\n"
-                     + "  unmark [number] - mark task as not done\n"
-                     + "  delete [number] - delete a task\n"
-                     + "  find [keyword] - find tasks by keyword\n"
-                     + "  bye - exit";
         }
     }
     

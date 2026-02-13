@@ -23,6 +23,7 @@ public class Main extends Application {
             Scene scene = new Scene(ap);
             stage.setScene(scene);
             fxmlLoader.<MainWindow>getController().setKiko(kiko);  // inject the Kiko instance
+            fxmlLoader.<MainWindow>getController().setStage(stage);  // pass the stage for window control
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
