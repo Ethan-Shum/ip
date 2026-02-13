@@ -36,6 +36,7 @@ public class Parser {
      * @throws DateTimeParseException If the string cannot be parsed with any format.
      */
     public LocalDateTime parseDateTime(String dateString) throws DateTimeParseException {
+        assert dateString != null : "Date string to parse cannot be null";
         for (DateTimeFormatter formatter : DATE_PARSERS) {
             try {
                 return LocalDateTime.parse(dateString, formatter);
@@ -53,6 +54,7 @@ public class Parser {
      * @return A string array where [0] is description and [1] is date, or null if invalid
      */
     public String[] parseDeadlineArgument(String argument) {
+        assert argument != null : "Argument string cannot be null";
         if (argument.isEmpty()) {
             return null;
         }
@@ -79,6 +81,7 @@ public class Parser {
      * @return A string array where [0] is description, [1] is start date, and [2] is end date, or null if invalid
      */
     public String[] parseEventArgument(String argument) {
+        assert argument != null : "Argument string cannot be null";
         if (argument.isEmpty()) {
             return null;
         }

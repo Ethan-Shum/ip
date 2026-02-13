@@ -40,6 +40,7 @@ public class TaskList {
      */
     public void addTask(String taskDescription) {
         // Default behavior - create a Todo task
+        assert taskDescription != null : "Task description should not be null";
         tasks.add(new Todo(taskDescription));
         saveTasks();
     }
@@ -50,6 +51,7 @@ public class TaskList {
      * @param description The description of the Todo task.
      */
     public void addTodo(String description) {
+        assert description != null && !description.isEmpty() : "Todo description cannot be empty";
         tasks.add(new Todo(description));
         saveTasks();
     }
@@ -61,6 +63,8 @@ public class TaskList {
      * @param by The deadline date/time for the task.
      */
     public void addDeadline(String description, LocalDateTime by) {
+        assert description != null && !description.isEmpty() : "Deadline description cannot be empty";
+        assert by != null : "Deadline date cannot be null";
         tasks.add(new Deadline(description, by));
         saveTasks();
     }
@@ -73,6 +77,9 @@ public class TaskList {
      * @param to The end time of the event.
      */
     public void addEvent(String description, LocalDateTime from, LocalDateTime to) {
+        assert description != null && !description.isEmpty() : "Event description cannot be empty";
+        assert from != null : "Event start time cannot be null";
+        assert to != null : "Event end time cannot be null";
         tasks.add(new Event(description, from, to));
         saveTasks();
     }
@@ -95,6 +102,7 @@ public class TaskList {
      */
     public boolean markTask(int index) {
         if (index >= 1 && index <= tasks.size()) {
+            assert tasks.get(index - 1) != null : "Task at valid index should not be null";
             tasks.get(index - 1).markAsDone();
             saveTasks();
             return true;
@@ -111,6 +119,7 @@ public class TaskList {
      */
     public boolean unmarkTask(int index) {
         if (index >= 1 && index <= tasks.size()) {
+            assert tasks.get(index - 1) != null : "Task at valid index should not be null";
             tasks.get(index - 1).markAsNotDone();
             saveTasks();
             return true;

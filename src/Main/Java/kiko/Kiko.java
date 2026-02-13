@@ -54,10 +54,13 @@ public class Kiko {
         }
         
         Command command = Command.fromInput(input);
+        assert command != null : "Command should not be null after parsing";
+        
         String argument = command.getArgument(input.toLowerCase());
         
         switch (command) {
             case LIST:
+                assert taskList != null : "TaskList should be initialized";
                 return handleListGui();
                 
             case MARK:
@@ -82,7 +85,7 @@ public class Kiko {
                 return handleFindGui(argument);
                 
             case BYE:
-                return "Goodbye! Hope to see you again soon!";
+                return "CLOSE_WINDOW:Goodbye! Hope to see you again soon!";
                 
             case UNKNOWN:
             default:
