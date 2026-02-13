@@ -12,6 +12,7 @@ public enum Command {
     DEADLINE("deadline"),
     EVENT("event"),
     FIND("find"),
+    UNDO("undo"),
     BYE("bye"),
     UNKNOWN("unknown");
     

@@ -9,6 +9,7 @@ import kiko.task.Task;
 import kiko.tasklist.TaskList;
 import kiko.storage.Storage;
 import kiko.parser.Parser;
+import kiko.history.History;
 
 /**
  * Kiko is a task management chatbot that allows users to manage their tasks.
@@ -20,6 +21,7 @@ public class Kiko {
     
     private Parser parser;
     private TaskList taskList;
+    private History history;
     
     /**
      * Constructor for Kiko.
@@ -29,6 +31,9 @@ public class Kiko {
         this.parser = new Parser();
         ArrayList<Task> loadedTasks = Storage.loadTasks();
         this.taskList = new TaskList(loadedTasks);
+        this.history = new History();
+        // Save initial state
+        this.history.saveState(this.taskList);
     }
     
     /**
@@ -64,25 +69,34 @@ public class Kiko {
             return handleListGui();
             
         case MARK:
+            history.saveState(taskList);
             return handleMarkGui(argument);
             
         case UNMARK:
+            history.saveState(taskList);
             return handleUnmarkGui(argument);
             
         case DELETE:
+            history.saveState(taskList);
             return handleDeleteGui(argument);
             
         case TODO:
+            history.saveState(taskList);
             return handleTodoGui(argument);
             
         case DEADLINE:
+            history.saveState(taskList);
             return handleDeadlineGui(argument);
             
         case EVENT:
+            history.saveState(taskList);
             return handleEventGui(argument);
             
         case FIND:
             return handleFindGui(argument);
+            
+        case UNDO:
+            return handleUndoGui();
             
         case BYE:
             return "CLOSE_WINDOW:Goodbye! Hope to see you again soon!";
@@ -220,6 +234,23 @@ public class Kiko {
         }
     }
     
+    private String handleUndoGui() {
+        if (!history.canUndo()) {
+            return "Nothing to undo!";
+        }
+        
+        TaskList previousState = history.undo();
+        if (previousState == null) {
+            return "Nothing to undo!";
+        }
+        
+        this.taskList = previousState;
+        // Also save the restored state to file so it persists
+        Storage.saveTasks(this.taskList.getAllTasksArrayList());
+        
+        return "Undo successful! Restored previous state.";
+    }
+
     private String handleFindGui(String argument) {
         if (argument.isEmpty()) {
             return "Please provide a keyword to search for!";
