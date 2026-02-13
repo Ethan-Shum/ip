@@ -129,25 +129,25 @@ public class Storage {
             Task task = null;
             
             switch (type) {
-                case "T":
-                    task = new Todo(description);
-                    break;
-                case "D":
-                    if (parts.length >= 4) {
-                        String by = parts[3].trim();
-                        LocalDateTime byDateTime = LocalDateTime.parse(by, DATE_FORMATTER);
-                        task = new Deadline(description, byDateTime);
-                    }
-                    break;
-                case "E":
-                    if (parts.length >= 5) {
-                        String from = parts[3].trim();
-                        String to = parts[4].trim();
-                        LocalDateTime fromDateTime = LocalDateTime.parse(from, DATE_FORMATTER);
-                        LocalDateTime toDateTime = LocalDateTime.parse(to, DATE_FORMATTER);
-                        task = new Event(description, fromDateTime, toDateTime);
-                    }
-                    break;
+            case "T":
+                task = new Todo(description);
+                break;
+            case "D":
+                if (parts.length >= 4) {
+                    String by = parts[3].trim();
+                    LocalDateTime byDateTime = LocalDateTime.parse(by, DATE_FORMATTER);
+                    task = new Deadline(description, byDateTime);
+                }
+                break;
+            case "E":
+                if (parts.length >= 5) {
+                    String from = parts[3].trim();
+                    String to = parts[4].trim();
+                    LocalDateTime fromDateTime = LocalDateTime.parse(from, DATE_FORMATTER);
+                    LocalDateTime toDateTime = LocalDateTime.parse(to, DATE_FORMATTER);
+                    task = new Event(description, fromDateTime, toDateTime);
+                }
+                break;
             }
             
             if (task != null && isDone) {
