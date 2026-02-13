@@ -32,6 +32,7 @@ public class Storage {
      * @param tasks The list of tasks to save.
      */
     public static void saveTasks(ArrayList<Task> tasks) {
+        assert tasks != null : "Tasks list to save cannot be null";
         try {
             // Create directory if it doesn't exist
             Path directoryPath = Paths.get(DIRECTORY_PATH);
