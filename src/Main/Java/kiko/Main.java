@@ -24,6 +24,9 @@ public class Main extends Application {
             stage.setScene(scene);
             fxmlLoader.<MainWindow>getController().setKiko(kiko);  // inject the Kiko instance
             fxmlLoader.<MainWindow>getController().setStage(stage);  // pass the stage for window control
+            stage.setTitle("Kiko");
+            stage.setMinHeight(600.0);
+            stage.setMinWidth(400.0);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

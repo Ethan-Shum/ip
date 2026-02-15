@@ -112,6 +112,7 @@ public class Kiko {
                  + "  unmark [number] - mark task as not done\n"
                  + "  delete [number] - delete a task\n"
                  + "  find [keyword] - find tasks by keyword\n"
+                 + "  undo - undo the last command\n"
                  + "  bye - exit";
         }
     }
