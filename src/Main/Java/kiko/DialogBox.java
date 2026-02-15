@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
 
 /**
  * Represents a dialog box consisting of an ImageView to represent the speaker's face
@@ -36,6 +37,9 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(img);
+        
+        Circle clip = new Circle(displayPicture.getFitWidth() / 2, displayPicture.getFitHeight() / 2, displayPicture.getFitWidth() / 2);
+        displayPicture.setClip(clip);
     }
 
     /**
@@ -49,12 +53,25 @@ public class DialogBox extends HBox {
     }
 
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
-    }
-
-    public static DialogBox getDukeDialog(String text, Image img) {
         var db = new DialogBox(text, img);
-        db.flip();
+        db.dialog.setStyle("-fx-background-color: #007bff; -fx-text-fill: white; -fx-padding: 10; -fx-background-radius: 10;");
         return db;
     }
+
+    /**
+     * Creates a dialog box for Kiko (the bot) with the specified text and image.
+     * The dialog box is flipped to have the image on the left.
+     * The text bubble is styled with a dark grey background and white text.
+     *
+     * @param text The text to display in the dialog box.
+     * @param img The image to display for Kiko.
+     * @return A DialogBox containing Kiko's response.
+     */
+    public static DialogBox getKikoDialog(String text, Image img) {
+        var db = new DialogBox(text, img);
+        db.flip();
+        db.dialog.setStyle("-fx-background-color: #555555; -fx-text-fill: white; -fx-padding: 10; -fx-background-radius: 10;");
+        return db;
+    }
+    //Used Gemini 3 to make the text bubble
 }

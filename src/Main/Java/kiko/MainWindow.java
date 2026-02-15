@@ -25,8 +25,8 @@ public class MainWindow extends AnchorPane {
     private Kiko kiko;
     private Stage stage;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/Cinnamoroll.png"));
-    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/Pompompurin.png"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/cat.png"));
+    private Image kikoImage = new Image(this.getClass().getResourceAsStream("/images/kiko.png"));
 
     @FXML
     public void initialize() {
@@ -35,7 +35,7 @@ public class MainWindow extends AnchorPane {
         // Add Kiko's greeting when the GUI starts
         String greeting = "Hello! I'm Kiko the bunny\nWhat can I do for you? >.<";
         dialogContainer.getChildren().addAll(
-                DialogBox.getDukeDialog(greeting, dukeImage)
+                DialogBox.getKikoDialog(greeting, kikoImage)
         );
     }
 
@@ -64,7 +64,7 @@ public class MainWindow extends AnchorPane {
             String actualResponse = response.substring("CLOSE_WINDOW:".length());
             dialogContainer.getChildren().addAll(
                     DialogBox.getUserDialog(input, userImage),
-                    DialogBox.getDukeDialog(actualResponse, dukeImage)
+                    DialogBox.getKikoDialog(actualResponse, kikoImage)
             );
             userInput.clear();
             
@@ -85,7 +85,7 @@ public class MainWindow extends AnchorPane {
             // Normal response
             dialogContainer.getChildren().addAll(
                     DialogBox.getUserDialog(input, userImage),
-                    DialogBox.getDukeDialog(response, dukeImage)
+                    DialogBox.getKikoDialog(response, kikoImage)
             );
             userInput.clear();
         }
