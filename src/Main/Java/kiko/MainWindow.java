@@ -33,7 +33,7 @@ public class MainWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
         
         // Add Kiko's greeting when the GUI starts
-        String greeting = "Hello! I'm Kiko the bunny\nWhat can I do for you? >.<";
+        String greeting = "Hello! I'm Kiko the bunny\nWhat can I do for you? >.<\n\n" + Kiko.HELP_MESSAGE;
         dialogContainer.getChildren().addAll(
                 DialogBox.getKikoDialog(greeting, kikoImage)
         );

@@ -23,6 +23,18 @@ public class Kiko {
     private TaskList taskList;
     private History history;
     
+    public static final String HELP_MESSAGE = "Try these commands:\n"
+                 + "  list - show all tasks\n"
+                 + "  todo [description] - add a todo\n"
+                 + "  deadline [description] /by [date] - add a deadline\n"
+                 + "  event [description] /from [date] /to [date] - add an event\n"
+                 + "  mark [number] - mark task as done\n"
+                 + "  unmark [number] - mark task as not done\n"
+                 + "  delete [number] - delete a task\n"
+                 + "  find [keyword] - find tasks by keyword\n"
+                 + "  undo - undo the last command\n"
+                 + "  bye - exit";
+
     /**
      * Constructor for Kiko.
      * Initializes the parser and loads tasks from storage.
@@ -103,17 +115,7 @@ public class Kiko {
             
         case UNKNOWN:
         default:
-            return "I'm sorry, but I don't know what that means. Try these commands:\n"
-                 + "  list - show all tasks\n"
-                 + "  todo [description] - add a todo\n"
-                 + "  deadline [description] /by [date] - add a deadline\n"
-                 + "  event [description] /from [date] /to [date] - add an event\n"
-                 + "  mark [number] - mark task as done\n"
-                 + "  unmark [number] - mark task as not done\n"
-                 + "  delete [number] - delete a task\n"
-                 + "  find [keyword] - find tasks by keyword\n"
-                 + "  undo - undo the last command\n"
-                 + "  bye - exit";
+            return "I'm sorry, but I don't know what that means. " + HELP_MESSAGE;
         }
     }
     
@@ -133,12 +135,12 @@ public class Kiko {
     private String handleMarkGui(String argument) {
         int taskNumber = parser.parseTaskNumber(argument);
         if (taskNumber == -1) {
-            return "Please provide a valid task number to mark!";
+            return "OI!! Please provide a valid task number to mark!";
         }
         
         if (taskList.markTask(taskNumber)) {
             Task task = taskList.getTask(taskNumber);
-            return "Nice! I've marked this task as done:\n  " + task.toString();
+            return "Nicee! I've marked this task as done:\n  " + task.toString();
         } else {
             return "Task number " + taskNumber + " does not exist. You have " + taskList.getTaskCount() + " tasks.";
         }
@@ -147,7 +149,7 @@ public class Kiko {
     private String handleUnmarkGui(String argument) {
         int taskNumber = parser.parseTaskNumber(argument);
         if (taskNumber == -1) {
-            return "Please provide a valid task number to unmark!";
+            return "Heyy!!! Please provide a valid task number to unmark!";
         }
         
         if (taskList.unmarkTask(taskNumber)) {
@@ -161,12 +163,12 @@ public class Kiko {
     private String handleDeleteGui(String argument) {
         int taskNumber = parser.parseTaskNumber(argument);
         if (taskNumber == -1) {
-            return "Please provide a valid task number to delete!";
+            return "HEY! Please provide a valid task number to delete!";
         }
         
         Task deletedTask = taskList.deleteTask(taskNumber);
         if (deletedTask != null) {
-            return "Noted. I've removed this task:\n  " + deletedTask.toString() + "\nNow you have " + taskList.getTaskCount() + " tasks in the list.";
+            return "Okieee. I've removed this task:\n  " + deletedTask.toString() + "\nNow you have " + taskList.getTaskCount() + " tasks in the list.";
         } else {
             return "Task number " + taskNumber + " does not exist. You have " + taskList.getTaskCount() + " tasks.";
         }
@@ -174,7 +176,7 @@ public class Kiko {
     
     private String handleTodoGui(String argument) {
         if (argument.isEmpty()) {
-            return "The description of a todo cannot be empty!";
+            return "OIIII!!! The description of a todo cannot be empty!";
         }
         
         taskList.addTodo(argument);
@@ -189,9 +191,9 @@ public class Kiko {
         String[] parsedArgs = parser.parseDeadlineArgument(argument);
         if (parsedArgs == null) {
             if (!argument.contains("/by ")) {
-                return "Please include '/by' followed by the deadline date!";
+                return "HEY!!! Please include '/by' followed by the deadline date!";
             } else {
-                return "Please provide both description and deadline!";
+                return "OIII!!!Please provide both description and deadline!";
             }
         }
         
@@ -201,15 +203,15 @@ public class Kiko {
         try {
             LocalDateTime dateTime = parser.parseDateTime(dateString);
             taskList.addDeadline(description, dateTime);
-            return "Got it. I've added this task:\n  " + taskList.getTask(taskList.getTaskCount()).toString() + "\nNow you have " + taskList.getTaskCount() + " tasks in the list.";
+            return "Got itz. I've added this task:\n  " + taskList.getTask(taskList.getTaskCount()).toString() + "\nNow you have " + taskList.getTaskCount() + " tasks in the list.";
         } catch (DateTimeParseException e) {
-            return "Invalid date format! Please use: dd/MM/yyyy HHmm";
+            return "OIII!!! Invalid date format! Please use: dd/MM/yyyy HHmm";
         }
     }
     
     private String handleEventGui(String argument) {
         if (argument.isEmpty()) {
-            return "Please provide a description and time range! Usage: event [description] /from [date] /to [date]";
+            return "Hey!!! Please provide a description and time range! Usage: event [description] /from [date] /to [date]";
         }
         
         String[] parsedArgs = parser.parseEventArgument(argument);

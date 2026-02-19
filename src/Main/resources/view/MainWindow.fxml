@@ -38,7 +38,7 @@
                     prefWidth="400.0"
                     vvalue="1.0"
                     fitToWidth="true"
-                    style="-fx-background: black; -fx-background-color: black;"
+                    style="-fx-background: #E8F5E9; -fx-background-color: #E8F5E9;"
                     AnchorPane.topAnchor="0.0"
                     AnchorPane.leftAnchor="0.0"
                     AnchorPane.rightAnchor="0.0"
@@ -47,7 +47,7 @@
                 <VBox fx:id="dialogContainer"
                       prefHeight="552.0"
                       prefWidth="388.0"
-                      style="-fx-background-color: black;" />
+                      style="-fx-background-color: #E8F5E9;" />
             </content>
         </ScrollPane>
     </children>
