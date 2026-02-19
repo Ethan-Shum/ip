@@ -239,7 +239,7 @@ public class Kiko {
     
     private String handleUndoGui() {
         if (!history.canUndo()) {
-            return "Nothing to undo!";
+            return "Oh No!! Nothing to undo!";
         }
         
         TaskList previousState = history.undo();
