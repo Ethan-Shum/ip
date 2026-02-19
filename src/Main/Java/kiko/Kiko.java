@@ -261,7 +261,7 @@ public class Kiko {
         
         Task[] matchingTasks = taskList.findTasks(argument);
         if (matchingTasks.length == 0) {
-            return "No matching tasks found for keyword: " + argument;
+            return "Walao!! No matching tasks found for keyword: " + argument;
         }
         
         StringBuilder response = new StringBuilder("Here are the matching tasks in your list:\n");
