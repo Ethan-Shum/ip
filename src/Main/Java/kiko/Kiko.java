@@ -251,7 +251,7 @@ public class Kiko {
         // Also save the restored state to file so it persists
         Storage.saveTasks(this.taskList.getAllTasksArrayList());
         
-        return "Undo successful! Restored previous state.";
+        return "YAYY!!! Undo successful! Restored previous state.";
     }
 
     private String handleFindGui(String argument) {
