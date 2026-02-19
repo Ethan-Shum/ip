@@ -256,7 +256,7 @@ public class Kiko {
 
     private String handleFindGui(String argument) {
         if (argument.isEmpty()) {
-            return "Please provide a keyword to search for!";
+            return "OIII! Please provide a keyword to search for!";
         }
         
         Task[] matchingTasks = taskList.findTasks(argument);
